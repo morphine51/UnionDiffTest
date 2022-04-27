@@ -30,6 +30,8 @@ public class RedisBaseController {
 
 	@RequestMapping("redis")
 	public @ResponseBody ResponseEntity<HttpStatus> bbb() {
+		
+		System.out.println("Redis Base Start ... ");
 		clearRedis();
 
 		Long processStartTime = System.currentTimeMillis();
@@ -58,20 +60,20 @@ public class RedisBaseController {
 		
 		// 6. Redis에서 집합연산
 		start = System.currentTimeMillis();
-		jedis.sdiffstore("tot", "tot", "key3");
-		System.out.println("차집합 결과 시간 = " + (System.currentTimeMillis() - start) + "ms");
+		a = jedis.sdiffstore("tot", "tot", "key3");
+		System.out.println("차집합 결과 시간 = " + (System.currentTimeMillis() - start) + "ms" + " " + a);
 		// 기대값 = 1200000
 		Set<String> tot = jedis.smembers("tot");
-		System.out.println("########### : " + tot.size());
 		
 		// 6. Redis에서 집합연산
 		start = System.currentTimeMillis();
-		jedis.sunionstore("tot", "tot", "key4");
-		System.out.println("합집합 결과 시간 = " + (System.currentTimeMillis() - start) + "ms");
+		a = jedis.sunionstore("tot", "tot", "key4");
+		System.out.println("합집합 결과 시간 = " + (System.currentTimeMillis() - start) + "ms" + " " + a);
 		
 		// 8. Redis에서 결과 날리기
-		clearRedis();		
 		System.out.println("전체걸린 시간 = " + (System.currentTimeMillis() - processStartTime) + "ms");
+		
+		clearRedis();		
 		
 		return new ResponseEntity<HttpStatus>(HttpStatus.OK);
 	}
